@@ -1,7 +1,8 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { TableNameEnum } from './enums/table-name.enum';
 import { BaseEntityModel } from './models/base-entity.model';
 import { EventEntity } from './event.entity';
+import { HearFromEnum } from '../../modules/ participant/models/enums/hear-from.enum';
 
 @Entity(TableNameEnum.PARTICIPANTS)
 export class ParticipantEntity extends BaseEntityModel {
@@ -14,9 +15,12 @@ export class ParticipantEntity extends BaseEntityModel {
   @Column('date')
   dateOfBirth: Date;
 
-  @Column('text')
-  infoAboutEvent: string;
+  @Column('enum', { enum: HearFromEnum })
+  infoAboutEvent: HearFromEnum;
 
-  @ManyToMany(() => EventEntity, (entity) => entity.participants)
-  events?: EventEntity[];
+  @Column()
+  eventId: string;
+  @ManyToOne(() => EventEntity, (entity) => entity.participants)
+  @JoinColumn({ foreignKeyConstraintName: 'eventId' })
+  event?: EventEntity;
 }

@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { BaseEntityModel } from './models/base-entity.model';
 import { TableNameEnum } from './enums/table-name.enum';
 import { ParticipantEntity } from './participant.entity';
@@ -17,7 +17,6 @@ export class EventEntity extends BaseEntityModel {
   @Column('text')
   organizer: string;
 
-  @ManyToMany(() => ParticipantEntity, (entity) => entity.events)
-  @JoinTable()
+  @OneToMany(() => ParticipantEntity, (entity) => entity.event)
   participants: ParticipantEntity[];
 }

@@ -6,6 +6,13 @@
     "deleteOutDir": true,
     "plugins": [
       "@nestjs/swagger"
+    ],
+    "assets": [
+      {
+        "include": "modules/hbs-engine/views",
+        "watchAssets": true,
+        "outDir": "dist/src"
+      }
     ]
   }
 }

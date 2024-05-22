@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Participants</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    .container {
+      width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .event-details {
+      margin-bottom: 20px;
+    }
+    .participants {
+      margin-top: 20px;
+    }
+    .participant {
+      border: 1px solid #ddd;
+      padding: 15px;
+      background: #fff;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 10px;
+    }
+    .participant p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Participants for "{{name}}"</h1>
+  <div class="event-details">
+    <p><strong>Description:</strong> {{description}}</p>
+    <p><strong>Date:</strong> {{event_date}}</p>
+    <p><strong>Organizer:</strong> {{organizer}}</p>
+  </div>
+  <div class="participants">
+    {{#each participants}}
+      <div class="participant">
+        <p><strong>Name:</strong> {{this.fullname}}</p>
+        <p><strong>Email:</strong> {{this.email}}</p>
+        <p><strong>Date of Birth:</strong> {{this.dateOfBirth}}</p>
+        <p><strong>Info about Event:</strong> {{this.infoAboutEvent}}</p>
+      </div>
+    {{/each}}
+  </div>
+</div>
+</body>
+</html>

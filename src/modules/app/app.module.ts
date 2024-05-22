@@ -5,6 +5,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '../../configs/configs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Config, PostgresConfig } from '../../configs/config.type';
+import { ParticipantModule } from '../ participant/participant.module';
+import { EventModule } from '../event/event.module';
+import * as path from 'node:path';
 
 @Module({
   imports: [
@@ -23,10 +26,31 @@ import { Config, PostgresConfig } from '../../configs/config.type';
           username: postgresConfigs.user,
           password: postgresConfigs.password,
           database: postgresConfigs.dbName,
-          entities: [],
+          entities: [
+            path.join(
+              process.cwd(),
+              'dist',
+              'src',
+              'database',
+              'entities',
+              '*.entity.js',
+            ),
+          ],
+          migrations: [
+            path.join(
+              process.cwd(),
+              'dist',
+              'src',
+              'database',
+              'migrations',
+              '*.js',
+            ),
+          ],
         };
       },
     }),
+    ParticipantModule,
+    EventModule,
   ],
   controllers: [AppController],
   providers: [AppService],
