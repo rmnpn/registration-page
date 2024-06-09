@@ -25,9 +25,14 @@
       margin-bottom: 20px;
     }
     .participants {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px; /* Відстань між колонками */
       margin-top: 20px;
     }
     .participant {
+      flex: 1 1 calc(33.333% - 20px); /* Три колонки з відстанню між ними */
+      box-sizing: border-box; /* Включити padding і border в ширину */
       border: 1px solid #ddd;
       padding: 15px;
       background: #fff;
@@ -41,13 +46,17 @@
 </head>
 <body>
 <div class="container">
+  <a href="/events">Events list</a>
   <h1>Participants for "{{name}}"</h1>
   <div class="event-details">
     <p><strong>Description:</strong> {{description}}</p>
     <p><strong>Date:</strong> {{event_date}}</p>
     <p><strong>Organizer:</strong> {{organizer}}</p>
   </div>
-  <div class="participants">
+  <form method="GET" action="" class="search-form">
+  <input type="text" name="search" value="{{meta.search}}" placeholder="Search participants...">
+  </form>
+    <div class="participants">
     {{#each participants}}
       <div class="participant">
         <p><strong>Name:</strong> {{this.fullname}}</p>

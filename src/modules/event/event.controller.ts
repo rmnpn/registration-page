@@ -1,5 +1,5 @@
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Param, Query, Render } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Render } from '@nestjs/common';
 import { EventService } from './services/event.service';
 import { EventListRequestDto } from './models/dto/request/event-list.request.dto';
 import { EventListResponseDto } from './models/dto/response/event-list.response.dto';
@@ -31,4 +31,5 @@ export class EventController {
     const entity = await this.eventService.getDetails(eventId, query);
     return EventMapper.toResponseDto(entity);
   }
+
 }

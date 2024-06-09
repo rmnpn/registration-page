@@ -15,6 +15,8 @@ export class EventRepository extends Repository<EventEntity> {
     query: EventListRequestDto,
   ): Promise<[EventEntity[], number]> {
     const qb = this.createQueryBuilder('event');
+    qb.andWhere('event.event_date > :currentDate');
+    qb.setParameter('currentDate', new Date());
     if (query.search) {
       qb.andWhere(
         'CONCAT(LOWER(event.name), LOWER(event.organizer)) LIKE :search',
@@ -44,20 +46,19 @@ export class EventRepository extends Repository<EventEntity> {
     query: EventDetailsRequestDto,
   ): Promise<EventEntity> {
     const qb = this.createQueryBuilder('event');
-    qb.leftJoinAndSelect(
-      'event.participants',
-      'participant',
-      'participant.eventId = :eventId',
-      { eventId },
-    );
-    qb.andWhere('event.id = :eventId', { eventId });
+    let condition = 'participant.eventId = :eventId';
 
     if (query.search) {
-      qb.andWhere(
-        'CONCAT(LOWER(participant.fullname), LOWER(participant.email)) LIKE :search',
-      );
+      const searchCondition =
+        'CONCAT(LOWER(participant.fullname), LOWER(participant.email)) LIKE :search';
+      condition = condition + ' AND ' + searchCondition;
       qb.setParameter('search', `%${query.search.toLowerCase()}%`);
     }
+    qb.leftJoinAndSelect('event.participants', 'participant', condition, {
+      eventId,
+    });
+    qb.andWhere('event.id = :eventId', { eventId });
+
     return await qb.getOne();
   }
 }

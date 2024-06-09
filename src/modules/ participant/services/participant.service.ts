@@ -6,8 +6,6 @@ import {
 import { ParticipantRepository } from './participant.repository';
 import { RegisterParticipantRequestDto } from '../models/dto/request/register-participant.request.dto';
 import { EventRepository } from '../../event/services/event.repository';
-import { ParticipantEntity } from '../../../database/entities/participant.entity';
-import { EventDetailsRequestDto } from '../../event/models/dto/request/event-details.request.dto';
 
 @Injectable()
 export class ParticipantService {
@@ -16,9 +14,7 @@ export class ParticipantService {
     private readonly eventRepository: EventRepository,
   ) {}
 
-  public async register(
-    dto: RegisterParticipantRequestDto,
-  ): Promise<ParticipantEntity> {
+  public async register(dto: RegisterParticipantRequestDto): Promise<void> {
     const event = await this.eventRepository.findOneBy({ id: dto.eventId });
     if (!event) {
       throw new NotFoundException('Event not found');
@@ -32,9 +28,8 @@ export class ParticipantService {
         'Participant already register for this event',
       );
     }
-    const entity = await this.participantRepository.save(
+    await this.participantRepository.save(
       this.participantRepository.create(dto),
     );
-    return await this.participantRepository.findOneWithEvent(entity.id);
   }
 }
